@@ -1,33 +1,49 @@
 import { Request, Response } from 'express';
+import { AuthService } from '../services/authService';
 import { sendSuccess, sendError } from '../utils/apiResponse';
-import jwt from 'jsonwebtoken';
-import { ENV } from '../config/env';
+import { AuthenticatedRequest } from '../middleware/authGuard';
 
 export const AuthController = {
   // POST /api/admin/login
   login: async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
-    // Standard initial check for development/setup
-    if (email === 'admin@puzzolana.com' && password === 'Puzzolana@2026') {
-      const token = jwt.sign(
-        { userId: 'admin_root', email, role: 'admin' },
-        ENV.JWT_SECRET,
-        { expiresIn: '7d' }
-      );
+    const authResult = await AuthService.login(email, password);
 
-      sendSuccess(res, {
-        token,
-        user: { id: 'admin_root', email, name: 'Puzzolana Platform Admin', role: 'admin' },
-      }, 'Authentication successful');
+    if (!authResult) {
+      sendError(res, 'Invalid email or password credentials', 401);
       return;
     }
 
-    sendError(res, 'Invalid credentials', 401);
+    sendSuccess(
+      res,
+      {
+        token: authResult.token,
+        user: authResult.user,
+      },
+      'Admin authentication successful',
+      200
+    );
   },
 
   // GET /api/admin/me
-  getCurrentUser: async (req: Request, res: Response): Promise<void> => {
-    sendSuccess(res, { role: 'admin', email: 'admin@puzzolana.com' }, 'User profile');
+  getCurrentUser: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    if (!req.user) {
+      sendError(res, 'Unauthenticated user', 401);
+      return;
+    }
+
+    const userProfile = await AuthService.getUserById(req.user.userId);
+    if (!userProfile) {
+      sendError(res, 'User record not found or deactivated', 404);
+      return;
+    }
+
+    sendSuccess(res, userProfile, 'User profile retrieved');
+  },
+
+  // POST /api/admin/logout
+  logout: async (req: Request, res: Response): Promise<void> => {
+    sendSuccess(res, { loggedOut: true }, 'Successfully logged out');
   },
 };

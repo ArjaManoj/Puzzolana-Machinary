@@ -19,7 +19,7 @@
 | **15** | **Quote Enquiry** | 🟢 **Completed** | Multi-step B2B RFQ wizard `/quote`, real-time lifecycle tracking portal `/enquiries/track`, PZQ-YYYY-XXXXXX tracking code generator, SLA guarantee |
 | **16** | **Service & Spare Parts** | 🟢 **Completed** | OEM spare parts catalog `/spare-parts`, plant field service portal `/service`, maintenance checklists, PZP/PZS tracking code generator |
 | **17** | **Dealer Experience** | 🟢 **Completed** | Global/domestic dealer network directory `/dealers`, territory locator, B2B dealership onboarding wizard with `PZD-` tracking |
-| 18 | Contact / Locations | ⚪ Pending | Global & national headquarters, manufacturing plants, regional offices |
+| **18** | **Contact / Locations** | 🟢 **Completed** | Corporate HQ & global manufacturing plant directory `/contact`, department routing, corporate message transmission with `PZC-` tracking |
 | 19 | Case Studies | ⚪ Pending | Verified customer stories, installation parameters, plant specs |
 | 20 | Careers | ⚪ Pending | Job listings, engineering departments, resume upload flow |
 | 21 | News / Blogs / Articles | ⚪ Pending | Content hub with category filters, reading time, related articles |

@@ -116,5 +116,33 @@ describe('Authentication & RBAC Security Suite', () => {
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
     });
+
+    it('Editor role should be able to fetch content lists', async () => {
+      const res = await request(app)
+        .get('/api/admin/content?type=articles')
+        .set('Authorization', `Bearer ${editorToken}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(Array.isArray(res.body.data)).toBe(true);
+    });
+
+    it('Editor role should be forbidden (403) from deleting content items', async () => {
+      const res = await request(app)
+        .delete('/api/admin/content/articles/art-01')
+        .set('Authorization', `Bearer ${editorToken}`);
+
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBe(false);
+    });
+
+    it('Admin role should be able to delete content items', async () => {
+      const res = await request(app)
+        .delete('/api/admin/content/articles/art-01')
+        .set('Authorization', `Bearer ${adminToken}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
   });
 });

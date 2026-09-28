@@ -68,4 +68,52 @@ export const AdminController = {
     const deleted = await AdminService.deleteProduct(id, userId);
     sendSuccess(res, deleted, 'Product archived/deleted successfully');
   },
+
+  // ==========================================
+  // CONTENT MANAGEMENT CONTROLLERS
+  // ==========================================
+  // GET /api/admin/content
+  getContentList: async (req: Request, res: Response): Promise<void> => {
+    const { type = 'articles', status, search } = req.query;
+    const validTypes = ['articles', 'case-studies', 'events', 'downloads'] as const;
+    const contentType = validTypes.includes(type as any) ? (type as any) : 'articles';
+
+    const items = await AdminService.getContentItems(contentType, {
+      status: status as string,
+      search: search as string,
+    });
+    sendSuccess(res, items, `Retrieved ${items.length} ${contentType} for content management`);
+  },
+
+  // POST /api/admin/content/:type
+  createContentItem: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { type } = req.params;
+    const userId = req.user?.userId || 'admin';
+    const created = await AdminService.createContentItem(type, req.body, userId);
+    sendSuccess(res, created, `${type} created successfully`, 201);
+  },
+
+  // PATCH /api/admin/content/:type/:id
+  updateContentItem: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { type, id } = req.params;
+    const userId = req.user?.userId || 'admin';
+    const updated = await AdminService.updateContentItem(type, id, req.body, userId);
+    sendSuccess(res, updated, `${type} updated successfully`);
+  },
+
+  // DELETE /api/admin/content/:type/:id
+  deleteContentItem: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { type, id } = req.params;
+    const userId = req.user?.userId || 'admin';
+    const deleted = await AdminService.deleteContentItem(type, id, userId);
+    sendSuccess(res, deleted, `${type} item deleted successfully`);
+  },
+
+  // POST /api/admin/content/:type/:id/publish
+  toggleContentPublish: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { type, id } = req.params;
+    const userId = req.user?.userId || 'admin';
+    const result = await AdminService.toggleContentPublish(type, id, userId);
+    sendSuccess(res, result, `Publication status updated`);
+  },
 };

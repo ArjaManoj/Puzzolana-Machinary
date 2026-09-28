@@ -12,7 +12,7 @@ const router = Router();
 // Public auth endpoint
 router.post('/login', authLimiter, validateRequest(loginSchema), AuthController.login);
 
-// Protected Admin routes
+// Protected Admin Overview & Enquiries
 router.get('/me', authenticateJwt, AuthController.getCurrentUser);
 router.get('/kpis', authenticateJwt, requireRoles('admin', 'editor'), AdminController.getDashboardKpis);
 router.get('/enquiries', authenticateJwt, requireRoles('admin', 'editor'), AdminController.getEnquiries);
@@ -35,5 +35,12 @@ router.patch(
   AdminController.updateProductAdmin
 );
 router.delete('/products/:id', authenticateJwt, requireRoles('admin'), AdminController.deleteProductAdmin);
+
+// Admin Content Management routes (Articles, Case Studies, Events, Downloads)
+router.get('/content', authenticateJwt, requireRoles('admin', 'editor'), AdminController.getContentList);
+router.post('/content/:type', authenticateJwt, requireRoles('admin', 'editor'), AdminController.createContentItem);
+router.patch('/content/:type/:id', authenticateJwt, requireRoles('admin', 'editor'), AdminController.updateContentItem);
+router.delete('/content/:type/:id', authenticateJwt, requireRoles('admin'), AdminController.deleteContentItem);
+router.post('/content/:type/:id/publish', authenticateJwt, requireRoles('admin', 'editor'), AdminController.toggleContentPublish);
 
 export default router;

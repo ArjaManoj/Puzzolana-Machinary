@@ -29,6 +29,9 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 
+import { JsonLd } from '@/components/seo/JsonLd';
+import { generateBreadcrumbSchema } from '@/lib/seo';
+
 interface PageProps {
   params: {
     slug: string;
@@ -68,8 +71,27 @@ export default function CaseStudyDetailPage({ params }: PageProps) {
     0
   );
 
+  const breadcrumbsSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Case Studies', url: '/case-studies' },
+    { name: study.title, url: `/case-studies/${study.slug}` },
+  ]);
+
+  const caseStudyArticleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: study.title,
+    description: `${study.plantCapacityTPH} TPH ${study.industry} installation in ${study.location}, ${study.state}.`,
+    url: `https://puzzolana.com/case-studies/${study.slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Puzzolana Machinery OEM',
+    },
+  };
+
   return (
     <div className="min-h-screen bg-industrial-950 text-industrial-100 pb-28 pt-8">
+      <JsonLd data={[caseStudyArticleSchema, breadcrumbsSchema]} />
       {/* 1. Hero Header */}
       <section className="relative border-b border-industrial-800 bg-industrial-900/60 pb-12 pt-6 overflow-hidden">
         {/* Background Pattern */}

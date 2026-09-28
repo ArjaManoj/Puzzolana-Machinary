@@ -27,6 +27,9 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 
+import { JsonLd } from '@/components/seo/JsonLd';
+import { generateArticleSchema, generateBreadcrumbSchema } from '@/lib/seo';
+
 interface PageProps {
   params: {
     slug: string;
@@ -61,9 +64,16 @@ export default function ArticleDetailPage({ params }: PageProps) {
   }
 
   const relatedArticles = VERIFIED_ARTICLES.filter((a) => a.slug !== article.slug).slice(0, 3);
+  const articleSchema = generateArticleSchema(article);
+  const breadcrumbsSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'News & Insights', url: '/news' },
+    { name: article.title, url: `/news/${article.slug}` },
+  ]);
 
   return (
     <div className="min-h-screen bg-industrial-950 text-industrial-100 pb-28 pt-8">
+      <JsonLd data={[articleSchema, breadcrumbsSchema]} />
       {/* 1. Header & Breadcrumbs */}
       <section className="relative border-b border-industrial-800 bg-industrial-900/60 pb-12 pt-6 overflow-hidden">
         {/* Background Grid */}

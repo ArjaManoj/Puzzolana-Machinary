@@ -13,7 +13,7 @@
 | **09** | **Product Catalogue UI** | 🟢 **Completed** | Master catalogue `/products`, dynamic category `/products/[category]`, sidebar filters, grid/table view, comparison tray, quick RFQ modal |
 | **10** | **Product Detail Pages** | 🟢 **Completed** | Dynamic route `/products/[category]/[slug]`, interactive gallery, sticky spec matrix, features & benefits, materials matrix, downloads, 3D simulation tab, RFQ wizard |
 | **11** | **Homepage** | 🟢 **Completed** | Heavy industrial hero, zero-suppression verified stats engine, 8-category fleet grid, flagship showcase, 4-stage flowsheet journey, manufacturing foundry narrative, RFQ lead capture |
-| 12 | Application / Industry Pages | ⚪ Pending | Mining, Aggregates, Infrastructure, Process diagrams, Equipment mapping |
+| **12** | **Application / Industry Pages** | 🟢 **Completed** | Master solutions directory `/applications`, dynamic sector flowsheets `/applications/[industry]`, rock hardness matrix, stage-by-stage diagrams, equipment mappings |
 | 13 | Product Finder | ⚪ Pending | Rule-based discovery wizard (Material -> TPH -> Machine) |
 | 14 | Product Comparison | ⚪ Pending | 2-3 machine side-by-side spec comparison table |
 | 15 | Quote Enquiry | ⚪ Pending | Multi-step B2B quote wizard with PZQ tracking code generation |

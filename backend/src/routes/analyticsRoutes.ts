@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { AnalyticsController } from '../controllers/analyticsController';
 import { authenticateJwt, requireRoles } from '../middleware/authGuard';
+import { analyticsLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
-// Public telemetry ingestion
-router.post('/event', AnalyticsController.postEvent);
+// Public telemetry ingestion with rate limiter
+router.post('/event', analyticsLimiter, AnalyticsController.postEvent);
 
 // Protected Operations Command analytics
 router.get('/metrics', authenticateJwt, requireRoles('admin', 'editor'), AnalyticsController.getMetrics);

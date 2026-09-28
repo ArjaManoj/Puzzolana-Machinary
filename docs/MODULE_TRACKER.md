@@ -35,7 +35,7 @@
 | **31** | **SEO & Structured Data** | 🟢 **Completed** | Dynamic JSON-LD structured data generators, dynamic sitemap.ts indexing 41 routes, robots.ts, OpenGraph/Twitter cards |
 | **32** | **Accessibility (WCAG 2.1 AA)** | 🟢 **Completed** | SkipToContent component, main-content anchor, ARIA landmarks, focus-visible styling, prefers-reduced-motion support |
 | **33** | **Performance & Core Web Vitals** | 🟢 **Completed** | Next.js SWC minification, package import optimization, AVIF/WebP, immutable asset cache headers, backend TTL cache middleware, strong ETags |
-| 34 | Security Hardening | ⚪ Pending | Rate limiter, helmet, mongo sanitization, input validators, CSRF/XSS safeguards |
+| **34** | **Security Hardening** | 🟢 **Completed** | Tiered rate limiters (API, auth, RFQ, search, telemetry), recursive NoSQL/Mongo sanitizer, XSS sanitizer, CSRF/Origin guard, Helmet CSP & HSTS |
 | 35 | Testing | ⚪ Pending | Jest, Supertest, React Testing Library suite |
 | 36 | Production Deployment | ⚪ Pending | Dockerfile, PM2 configuration, build script validation |
 | 37 | Final Code Review | ⚪ Pending | Full architectural code review across all subsystems |

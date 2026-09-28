@@ -28,14 +28,14 @@
 | **24** | **Download Centre** | 🟢 **Completed** | Central technical asset repository `/downloads`, brochure/datasheet downloads, gated 2D/3D CAD GA drawing verification, live counters |
 | **25** | **Global Search** | 🟢 **Completed** | Unified search `/search`, `Ctrl+K` command palette, cross-domain relevance ranking, category filters, auto-complete suggestions |
 | **26** | **Admin Dashboard** | 🟢 **Completed** | Command dashboard `/admin/dashboard`, pipeline conversion funnel, fleet mix, live RFQ review & status update modal, security audit trail |
-| 27 | Admin Product Management | ⚪ Pending | CRUD product manager, technical spec table editor, media uploader |
-| 28 | Admin Content Management | ⚪ Pending | Draft-review-publish workflow for news, events, case studies |
-| 29 | Notifications | ⚪ Pending | Email notifications for customer receipt & internal sales desk |
-| 30 | Analytics | ⚪ Pending | Privacy-conscious event logger for searches, quotes, downloads |
-| 31 | SEO | ⚪ Pending | Dynamic JSON-LD structured data, sitemap.xml, robots.txt |
-| 32 | Accessibility | ⚪ Pending | WCAG 2.1 AA compliance, keyboard navigation, screen reader ARIA |
-| 33 | Performance | ⚪ Pending | Image optimization, dynamic imports, Core Web Vitals audit |
-| 34 | Security | ⚪ Pending | Rate limiter, helmet, mongo sanitization, input validators |
+| **27** | **Admin Product Management** | 🟢 **Completed** | CRUD machinery manager `/admin/products`, category/spec filters, modal with zero-suppression checks, admin delete guard |
+| **28** | **Admin Content Management** | 🟢 **Completed** | Editorial CMS `/admin/content` with 4 tabs (Articles, Case Studies, Events, Downloads), draft-review-publish workflow, delete modal |
+| **29** | **Notifications** | 🟢 **Completed** | Nodemailer SMTP dispatcher, 7 responsive HTML email templates, automatic dispatch on enquiries & RFQs, test suite |
+| **30** | **Analytics & Telemetry** | 🟢 **Completed** | Privacy-conscious IP-hashed event telemetry engine, conversion funnel metrics, useAnalytics hook, public beacon endpoint |
+| **31** | **SEO & Structured Data** | 🟢 **Completed** | Dynamic JSON-LD structured data generators, dynamic sitemap.ts indexing 41 routes, robots.ts, OpenGraph/Twitter cards |
+| **32** | **Accessibility (WCAG 2.1 AA)** | 🟢 **Completed** | SkipToContent component, main-content anchor, ARIA landmarks, focus-visible styling, prefers-reduced-motion support |
+| **33** | **Performance & Core Web Vitals** | 🟢 **Completed** | Next.js SWC minification, package import optimization, AVIF/WebP, immutable asset cache headers, backend TTL cache middleware, strong ETags |
+| 34 | Security Hardening | ⚪ Pending | Rate limiter, helmet, mongo sanitization, input validators, CSRF/XSS safeguards |
 | 35 | Testing | ⚪ Pending | Jest, Supertest, React Testing Library suite |
 | 36 | Production Deployment | ⚪ Pending | Dockerfile, PM2 configuration, build script validation |
 | 37 | Final Code Review | ⚪ Pending | Full architectural code review across all subsystems |

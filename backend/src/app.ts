@@ -10,32 +10,46 @@ import { errorHandler } from './middleware/errorHandler';
 export const createApp = (): Application => {
   const app = express();
 
+  // Enable strong ETags for HTTP 304 conditional cache validation
+  app.set('etag', 'strong');
+
   // Security headers with Helmet
-  app.use(helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
-  }));
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    })
+  );
 
   // CORS configuration
-  app.use(cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, server-to-server)
-      if (!origin) return callback(null, true);
-      const allowedOrigins = [ENV.CORS_ORIGIN, 'http://localhost:3000', 'http://127.0.0.1:3000'];
-      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-        return callback(null, true);
-      }
-      return callback(new Error('CORS policy does not allow access from this origin.'));
-    },
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const allowedOrigins = [ENV.CORS_ORIGIN, 'http://localhost:3000', 'http://127.0.0.1:3000'];
+        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+          return callback(null, true);
+        }
+        return callback(new Error('CORS policy does not allow access from this origin.'));
+      },
+      credentials: true,
+    })
+  );
 
-  // Gzip compression
-  app.use(compression());
+  // High-performance compression for responses > 512 bytes
+  app.use(
+    compression({
+      threshold: 512,
+      filter: (req, res) => {
+        if (req.headers['x-no-compression']) return false;
+        return compression.filter(req, res);
+      },
+    })
+  );
 
   // Logging
   if (ENV.NODE_ENV === 'development') {
     app.use(morgan('dev'));
-  } else {
+  } else if (ENV.NODE_ENV !== 'test') {
     app.use(morgan('combined'));
   }
 

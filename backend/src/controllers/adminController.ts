@@ -1,32 +1,66 @@
 import { Request, Response } from 'express';
-import { sendSuccess } from '../utils/apiResponse';
+import { AdminService } from '../services/adminService';
+import { sendSuccess, sendError } from '../utils/apiResponse';
+import { AuthenticatedRequest } from '../middleware/authGuard';
 
 export const AdminController = {
   // GET /api/admin/kpis
   getDashboardKpis: async (req: Request, res: Response): Promise<void> => {
-    const kpis = {
-      quoteEnquiries: 0,
-      serviceEnquiries: 0,
-      sparePartsEnquiries: 0,
-      dealerEnquiries: 0,
-      contactMessages: 0,
-      jobApplications: 0,
-      productViews: 0,
-      downloads: 0,
-      recentEnquiries: [],
-    };
+    const kpis = await AdminService.getKpis();
     sendSuccess(res, kpis, 'Admin dashboard KPIs fetched');
   },
 
   // GET /api/admin/enquiries
   getEnquiries: async (req: Request, res: Response): Promise<void> => {
-    sendSuccess(res, [], 'Admin enquiries list', 200, { page: 1, limit: 20, total: 0 });
+    const { page, limit } = req.query;
+    const result = await AdminService.getAllEnquiries(
+      page ? parseInt(page as string, 10) : 1,
+      limit ? parseInt(limit as string, 10) : 20
+    );
+    sendSuccess(res, result.enquiries, 'Admin enquiries list', 200, {
+      page: result.page,
+      limit: result.limit,
+      total: result.total,
+      totalPages: result.totalPages,
+    });
   },
 
   // PATCH /api/admin/enquiries/:id
-  updateEnquiryStatus: async (req: Request, res: Response): Promise<void> => {
+  updateEnquiryStatus: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const { id } = req.params;
     const { status, notes } = req.body;
-    sendSuccess(res, { id, status, notes, updatedAt: new Date().toISOString() }, 'Enquiry updated');
+    const userId = req.user?.userId || 'admin';
+
+    const updated = await AdminService.updateEnquiryStatus(id, status, notes, userId);
+    sendSuccess(res, updated, 'Enquiry updated successfully');
+  },
+
+  // GET /api/admin/products
+  getAllProductsAdmin: async (req: Request, res: Response): Promise<void> => {
+    const result = await AdminService.getAllEnquiries();
+    sendSuccess(res, [], 'Admin products catalogue');
+  },
+
+  // POST /api/admin/products
+  createProductAdmin: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const userId = req.user?.userId || 'admin';
+    const created = await AdminService.createProduct(req.body, userId);
+    sendSuccess(res, created, 'Product created successfully in draft status', 201);
+  },
+
+  // PATCH /api/admin/products/:id
+  updateProductAdmin: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const userId = req.user?.userId || 'admin';
+    const updated = await AdminService.updateProduct(id, req.body, userId);
+    sendSuccess(res, updated, 'Product updated successfully');
+  },
+
+  // DELETE /api/admin/products/:id
+  deleteProductAdmin: async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const userId = req.user?.userId || 'admin';
+    const deleted = await AdminService.deleteProduct(id, userId);
+    sendSuccess(res, deleted, 'Product archived/deleted successfully');
   },
 };

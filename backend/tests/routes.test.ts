@@ -18,7 +18,9 @@ describe('Architecture & Route Mounting Integration Tests', () => {
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
       expect(res.body.meta).toBeDefined();
-      expect(res.body.meta.filters.category).toBe('crushers');
+      expect(res.body.meta.page).toBe(1);
+      expect(Array.isArray(res.body.data)).toBe(true);
+      expect(res.body.data.every((p: { category: string }) => p.category === 'crushers')).toBe(true);
     });
 
     it('GET /api/statistics returns active verified company stats', async () => {

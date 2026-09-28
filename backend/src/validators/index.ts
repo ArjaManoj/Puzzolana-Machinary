@@ -1,2 +1,3 @@
-// Validators module registry
-export {};
+export * from './enquiryValidators';
+export * from './productValidators';
+export * from './authValidators';

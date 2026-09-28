@@ -25,7 +25,7 @@
 | **21** | **News / Blogs / Articles** | 🟢 **Completed** | Master content hub `/news` and dynamic technical papers `/news/[slug]`, reading time estimation, author profiles, structured metallurgical/TCO tables |
 | **22** | **Events** | 🟢 **Completed** | Global expo calendar `/events` (Excon, Bauma, Imme), booth coordinates, live machinery demos, VIP exhibition meeting booking with `PZE-` tracking |
 | **23** | **Sustainability / CSR** | 🟢 **Completed** | ESG dashboard `/sustainability`, 4 core strategic pillars, verified decarbonization/water conservation metrics, Puzzolana Technical Foundation CSR projects |
-| 24 | Download Centre | ⚪ Pending | Brochure, CAD/datasheet repository with download counter |
+| **24** | **Download Centre** | 🟢 **Completed** | Central technical asset repository `/downloads`, brochure/datasheet downloads, gated 2D/3D CAD GA drawing verification, live counters |
 | 25 | Global Search | ⚪ Pending | Unified search across products, specs, articles, and documents |
 | 26 | Admin Dashboard | ⚪ Pending | Analytics KPIs, enquiry conversion charts, visitor traffic |
 | 27 | Admin Product Management | ⚪ Pending | CRUD product manager, technical spec table editor, media uploader |

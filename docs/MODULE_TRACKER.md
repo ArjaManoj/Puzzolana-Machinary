@@ -9,7 +9,7 @@
 | **05** | **Express Backend** | 🟢 **Completed** | Services layer, Zod request validators, rule-based product finder, B2B quote processing, tracking |
 | **06** | **Authentication** | 🟢 **Completed** | Bcrypt hashing, JWT token manager, Admin & Editor RBAC guards, useAuth hook, admin login screen |
 | **07** | **Product Database** | 🟢 **Completed** | Comprehensive verified seed data across 8 official categories, automated DB seeder, QA test suite |
-| 08 | Product APIs | ⚪ Pending | REST endpoints with filtering, sorting, pagination, search |
+| **08** | **Product APIs** | 🟢 **Completed** | REST endpoints: discovery, model search, featured, downstream compatibility, side-by-side comparison matrix, rule finder |
 | 09 | Product Catalogue UI | ⚪ Pending | Category filters, grid/list view, breadcrumbs, responsive cards |
 | 10 | Product Detail Pages | ⚪ Pending | Sticky technical matrix, downloads, 3D/video tabs, quote modal |
 | 11 | Homepage | ⚪ Pending | Heavy industrial hero, verified metrics counter, machine journey |

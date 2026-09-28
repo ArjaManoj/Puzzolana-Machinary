@@ -5,16 +5,18 @@ import { sendSuccess, sendError } from '../utils/apiResponse';
 export const ProductController = {
   // GET /api/products
   getAllProducts: async (req: Request, res: Response): Promise<void> => {
-    const { category, application, material, search, minCapacity, maxCapacity, mobility, page, limit } = req.query;
+    const { category, subcategory, application, material, search, minCapacity, maxCapacity, mobility, sortBy, page, limit } = req.query;
 
     const result = await ProductService.getProducts({
       category: category as string,
+      subcategory: subcategory as string,
       application: application as string,
       material: material as string,
       search: search as string,
       minCapacity: minCapacity ? parseFloat(minCapacity as string) : undefined,
       maxCapacity: maxCapacity ? parseFloat(maxCapacity as string) : undefined,
       mobility: mobility as string,
+      sortBy: sortBy as any,
       page: page ? parseInt(page as string, 10) : 1,
       limit: limit ? parseInt(limit as string, 10) : 12,
     });
@@ -27,20 +29,32 @@ export const ProductController = {
     });
   },
 
-  // GET /api/products/:slug
-  getProductBySlug: async (req: Request, res: Response): Promise<void> => {
-    const { slug } = req.params;
-    const product = await ProductService.getProductBySlug(slug);
-
-    if (!product) {
-      sendError(res, `Machine model '${slug}' not found in active catalogue.`, 404);
+  // GET /api/products/search?q=PJC
+  searchProducts: async (req: Request, res: Response): Promise<void> => {
+    const { q, limit } = req.query;
+    if (!q || typeof q !== 'string') {
+      sendError(res, 'Please provide a search query parameter ?q=', 400);
       return;
     }
 
-    sendSuccess(res, product, `Product details for ${slug}`);
+    const results = await ProductService.searchProducts(q, limit ? parseInt(limit as string, 10) : 10);
+    sendSuccess(res, results, `Search results for '${q}' (${results.length} matches)`);
   },
 
-  // GET /api/products/compare
+  // GET /api/products/featured
+  getFeaturedProducts: async (req: Request, res: Response): Promise<void> => {
+    const featured = await ProductService.getFeaturedProducts();
+    sendSuccess(res, featured, 'Featured flagship machinery products');
+  },
+
+  // GET /api/products/related/:slug
+  getRelatedProducts: async (req: Request, res: Response): Promise<void> => {
+    const { slug } = req.params;
+    const related = await ProductService.getRelatedProducts(slug);
+    sendSuccess(res, related, `Downstream compatible products for ${slug}`);
+  },
+
+  // GET /api/products/compare?ids=PJC-14076,PCC-2000
   compareProducts: async (req: Request, res: Response): Promise<void> => {
     const { ids } = req.query;
     if (!ids) {
@@ -49,9 +63,13 @@ export const ProductController = {
     }
 
     const idList = typeof ids === 'string' ? ids.split(',').map((id) => id.trim()) : [];
-    const products = await ProductService.getProductsByIds(idList);
+    if (idList.length < 2) {
+      sendError(res, 'Please select at least 2 machines for comparison', 400);
+      return;
+    }
 
-    sendSuccess(res, products, `Comparison matrix for ${products.length} machines`);
+    const comparisonMatrix = await ProductService.compareProductsAdvanced(idList);
+    sendSuccess(res, comparisonMatrix, `Comparison matrix for ${comparisonMatrix.comparedCount} machines`);
   },
 
   // POST /api/products/finder
@@ -67,5 +85,18 @@ export const ProductController = {
     });
 
     sendSuccess(res, matches, `Rule-based machine recommendations matched (${matches.length} models)`);
+  },
+
+  // GET /api/products/:slug
+  getProductBySlug: async (req: Request, res: Response): Promise<void> => {
+    const { slug } = req.params;
+    const product = await ProductService.getProductBySlug(slug);
+
+    if (!product) {
+      sendError(res, `Machine model '${slug}' not found in active catalogue.`, 404);
+      return;
+    }
+
+    sendSuccess(res, product, `Product details for ${slug}`);
   },
 };

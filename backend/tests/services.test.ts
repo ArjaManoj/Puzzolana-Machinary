@@ -28,12 +28,13 @@ describe('Express Backend Services & Validation Integration Tests', () => {
       expect(res.body.success).toBe(false);
     });
 
-    it('GET /api/products/compare returns compared machines array', async () => {
+    it('GET /api/products/compare returns compared machines matrix', async () => {
       const res = await request(app).get('/api/products/compare?ids=PJC-14076,PCC-2000');
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(Array.isArray(res.body.data)).toBe(true);
-      expect(res.body.data.length).toBe(2);
+      expect(res.body.data.comparedCount).toBe(2);
+      expect(Array.isArray(res.body.data.machines)).toBe(true);
+      expect(Array.isArray(res.body.data.attributesComparison)).toBe(true);
     });
 
     it('POST /api/products/finder returns rule-based equipment matches', async () => {

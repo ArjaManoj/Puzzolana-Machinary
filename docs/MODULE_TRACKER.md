@@ -15,7 +15,7 @@
 | **11** | **Homepage** | 🟢 **Completed** | Heavy industrial hero, zero-suppression verified stats engine, 8-category fleet grid, flagship showcase, 4-stage flowsheet journey, manufacturing foundry narrative, RFQ lead capture |
 | **12** | **Application / Industry Pages** | 🟢 **Completed** | Master solutions directory `/applications`, dynamic sector flowsheets `/applications/[industry]`, rock hardness matrix, stage-by-stage diagrams, equipment mappings |
 | **13** | **Product Finder** | 🟢 **Completed** | 5-step rule discovery wizard `/finder`, deterministic flowsheet calculation, power/stage estimation, instant RFQ modal trigger |
-| 14 | Product Comparison | ⚪ Pending | 2-3 machine side-by-side spec comparison table |
+| **14** | **Product Comparison** | 🟢 **Completed** | 2-4 machine comparison matrix `/products/compare`, highlight differences toggle, machine slot adder, print/export, quick presets, direct RFQ actions |
 | 15 | Quote Enquiry | ⚪ Pending | Multi-step B2B quote wizard with PZQ tracking code generation |
 | 16 | Service & Spare Parts | ⚪ Pending | Spare parts request with machine serial/part ID validator |
 | 17 | Dealer Experience | ⚪ Pending | Dealer network map, territory inquiry, dealer onboarding |

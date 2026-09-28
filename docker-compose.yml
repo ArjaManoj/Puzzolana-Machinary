@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # 1. MongoDB Database Container
+  # ============================================================================
+  mongodb:
+    image: mongo:7.0-jammy
+    container_name: puzzolana-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: puzzolana_machinery
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - puzzolana-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ============================================================================
+  # 2. Backend Express REST API Engine
+  # ============================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: puzzolana-backend-api
+    restart: always
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      MONGODB_URI: mongodb://mongodb:27017/puzzolana_machinery
+      JWT_SECRET: ${JWT_SECRET:-puzzolana_enterprise_machinery_secret_key_2026_production_grade_32char}
+      JWT_EXPIRES_IN: 7d
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      EMAIL_HOST: ${EMAIL_HOST:-smtp.gmail.com}
+      EMAIL_PORT: ${EMAIL_PORT:-587}
+      EMAIL_USER: ${EMAIL_USER:-}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-}
+      EMAIL_FROM: ${EMAIL_FROM:-Puzzolana Machinery <no-reply@puzzolana.com>}
+      ADMIN_NOTIFICATION_EMAIL: ${ADMIN_NOTIFICATION_EMAIL:-sales@puzzolana.com}
+    ports:
+      - "5000:5000"
+    volumes:
+      - backend_uploads:/app/uploads
+      - backend_logs:/app/logs
+    networks:
+      - puzzolana-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ============================================================================
+  # 3. Frontend Next.js 14 Web Portal
+  # ============================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: puzzolana-frontend-app
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000/api}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    ports:
+      - "3000:3000"
+    networks:
+      - puzzolana-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+networks:
+  puzzolana-network:
+    name: puzzolana-network
+    driver: bridge
+
+volumes:
+  mongo_data:
+    name: puzzolana-mongo-data
+  mongo_config:
+    name: puzzolana-mongo-config
+  backend_uploads:
+    name: puzzolana-backend-uploads
+  backend_logs:
+    name: puzzolana-backend-logs

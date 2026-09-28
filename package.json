@@ -17,6 +17,7 @@
     "test:backend": "npm run test --prefix backend",
     "test:frontend": "npm run test --prefix frontend",
     "lint": "npm run lint --prefix backend && npm run lint --prefix frontend",
+    "build:verify": "node scripts/verify-production-build.js",
     "verify": "node scripts/verify-setup.js"
   },
   "devDependencies": {

@@ -1,4 +1,9 @@
 import { Router, Request, Response } from 'express';
+import productRoutes from './productRoutes';
+import categoryRoutes from './categoryRoutes';
+import enquiryRoutes from './enquiryRoutes';
+import contentRoutes from './contentRoutes';
+import adminRoutes from './adminRoutes';
 
 const router = Router();
 
@@ -14,7 +19,7 @@ router.get('/health', (req: Request, res: Response) => {
   });
 });
 
-// Root API Welcome / Directory Endpoint
+// Root API Directory Endpoint
 router.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -26,13 +31,23 @@ router.get('/', (req: Request, res: Response) => {
       applications: '/api/applications',
       caseStudies: '/api/case-studies',
       quoteEnquiries: '/api/quote-enquiries',
+      serviceEnquiries: '/api/service-enquiries',
       sparePartsEnquiries: '/api/spare-parts-enquiries',
       dealerEnquiries: '/api/dealer-enquiries',
       tracking: '/api/enquiries/:referenceId',
       downloads: '/api/downloads',
+      statistics: '/api/statistics',
+      locations: '/api/locations',
       admin: '/api/admin',
     },
   });
 });
+
+// Mount domain routes
+router.use('/products', productRoutes);
+router.use('/categories', categoryRoutes);
+router.use('/', enquiryRoutes);
+router.use('/', contentRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

@@ -37,8 +37,13 @@ export const AdminController = {
 
   // GET /api/admin/products
   getAllProductsAdmin: async (req: Request, res: Response): Promise<void> => {
-    const result = await AdminService.getAllEnquiries();
-    sendSuccess(res, [], 'Admin products catalogue');
+    const { category, search, status } = req.query;
+    const products = await AdminService.getAllProducts({
+      category: category as string,
+      search: search as string,
+      status: status as string,
+    });
+    sendSuccess(res, products, `Retrieved ${products.length} products for admin`);
   },
 
   // POST /api/admin/products

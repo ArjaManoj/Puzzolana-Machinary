@@ -256,6 +256,36 @@ export const AdminService = {
     return { id, status, notes, updatedAt: new Date() };
   },
 
+  getAllProducts: async (filters: { category?: string; search?: string; status?: string } = {}) => {
+    let products: any[] = COMPREHENSIVE_PUZZOLANA_CATALOG;
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const dbProducts = await ProductModel.find().lean();
+        if (dbProducts.length > 0) products = dbProducts;
+      } catch (err) {
+        Logger.warn('Admin products fetch fallback', { error: (err as Error).message });
+      }
+    }
+
+    if (filters.category && filters.category !== 'all') {
+      products = products.filter((p) => p.category === filters.category);
+    }
+    if (filters.status && filters.status !== 'all') {
+      products = products.filter((p) => (p.status || 'published') === filters.status);
+    }
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      products = products.filter(
+        (p) =>
+          (p.name || '').toLowerCase().includes(q) ||
+          (p.modelNumber || '').toLowerCase().includes(q) ||
+          (p.productId || '').toLowerCase().includes(q)
+      );
+    }
+
+    return products;
+  },
+
   createProduct: async (productData: Record<string, unknown>, userId: string = 'admin') => {
     if (mongoose.connection.readyState === 1) {
       const created = await ProductModel.create(productData);
@@ -273,7 +303,11 @@ export const AdminService = {
 
   updateProduct: async (id: string, productData: Record<string, unknown>, userId: string = 'admin') => {
     if (mongoose.connection.readyState === 1) {
-      const updated = await ProductModel.findByIdAndUpdate(id, productData, { new: true });
+      const updated = await ProductModel.findOneAndUpdate(
+        { $or: [{ _id: mongoose.isValidObjectId(id) ? id : null }, { productId: id }, { slug: id.toLowerCase() }] },
+        productData,
+        { new: true }
+      );
       await AuditLogModel.create({
         userId,
         userEmail: 'admin@puzzolana.com',
@@ -289,15 +323,25 @@ export const AdminService = {
 
   deleteProduct: async (id: string, userId: string = 'admin') => {
     if (mongoose.connection.readyState === 1) {
-      await ProductModel.findByIdAndDelete(id);
-      await AuditLogModel.create({
-        userId,
-        userEmail: 'admin@puzzolana.com',
-        action: 'DELETE',
-        targetCollection: 'Products',
-        targetId: id,
-      });
-      return { success: true, id };
+      try {
+        await ProductModel.findOneAndDelete({
+          $or: [
+            { _id: mongoose.isValidObjectId(id) ? id : null },
+            { productId: id },
+            { slug: id.toLowerCase() },
+          ],
+        });
+        await AuditLogModel.create({
+          userId,
+          userEmail: 'admin@puzzolana.com',
+          action: 'DELETE',
+          targetCollection: 'Products',
+          targetId: id,
+        });
+        return { success: true, id };
+      } catch (err) {
+        Logger.warn('Product delete error', { error: (err as Error).message });
+      }
     }
     return { success: true, id };
   },

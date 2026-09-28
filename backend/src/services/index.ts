@@ -5,3 +5,4 @@ export * from './contentService';
 export * from './adminService';
 export * from './analyticsService';
 export * from './authService';
+export * from './searchService';

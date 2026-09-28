@@ -3,6 +3,7 @@ import productRoutes from './productRoutes';
 import categoryRoutes from './categoryRoutes';
 import enquiryRoutes from './enquiryRoutes';
 import contentRoutes from './contentRoutes';
+import searchRoutes from './searchRoutes';
 import adminRoutes from './adminRoutes';
 
 const router = Router();
@@ -26,6 +27,7 @@ router.get('/', (req: Request, res: Response) => {
     name: 'Puzzolana Machinery REST API',
     endpoints: {
       health: '/api/health',
+      search: '/api/search',
       products: '/api/products',
       categories: '/api/categories',
       applications: '/api/applications',
@@ -44,6 +46,7 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 // Mount domain routes
+router.use('/search', searchRoutes);
 router.use('/products', productRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/', enquiryRoutes);

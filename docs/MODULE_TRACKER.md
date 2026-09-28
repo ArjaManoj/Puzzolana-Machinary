@@ -21,7 +21,7 @@
 | **17** | **Dealer Experience** | 🟢 **Completed** | Global/domestic dealer network directory `/dealers`, territory locator, B2B dealership onboarding wizard with `PZD-` tracking |
 | **18** | **Contact / Locations** | 🟢 **Completed** | Corporate HQ & global manufacturing plant directory `/contact`, department routing, corporate message transmission with `PZC-` tracking |
 | **19** | **Case Studies** | 🟢 **Completed** | Master case study directory `/case-studies` and dynamic installation stories `/case-studies/[slug]`, flowsheet layouts, equipment fleets, verified ROI metrics |
-| 20 | Careers | ⚪ Pending | Job listings, engineering departments, resume upload flow |
+| **20** | **Careers** | 🟢 **Completed** | Engineering jobs hub `/careers`, department/experience filters, online application modal with `PZJ-` candidate tracking & talent pool |
 | 21 | News / Blogs / Articles | ⚪ Pending | Content hub with category filters, reading time, related articles |
 | 22 | Events | ⚪ Pending | Excon, Bauma, Imme exhibitions, past & upcoming calendar |
 | 23 | Sustainability / CSR | ⚪ Pending | Verified environmental metrics, safety governance, community projects |

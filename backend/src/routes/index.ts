@@ -5,6 +5,7 @@ import enquiryRoutes from './enquiryRoutes';
 import contentRoutes from './contentRoutes';
 import searchRoutes from './searchRoutes';
 import adminRoutes from './adminRoutes';
+import analyticsRoutes from './analyticsRoutes';
 
 const router = Router();
 
@@ -41,6 +42,7 @@ router.get('/', (req: Request, res: Response) => {
       statistics: '/api/statistics',
       locations: '/api/locations',
       admin: '/api/admin',
+      analytics: '/api/analytics',
     },
   });
 });
@@ -49,6 +51,7 @@ router.get('/', (req: Request, res: Response) => {
 router.use('/search', searchRoutes);
 router.use('/products', productRoutes);
 router.use('/categories', categoryRoutes);
+router.use('/analytics', analyticsRoutes);
 router.use('/', enquiryRoutes);
 router.use('/', contentRoutes);
 router.use('/admin', adminRoutes);

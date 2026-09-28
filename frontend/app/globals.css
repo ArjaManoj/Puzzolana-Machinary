@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 241, 245, 249;
+  --background-start-rgb: 11, 13, 17;
+  --background-end-rgb: 17, 20, 26;
+  --brand-yellow: #E6A817;
+  --brand-gold: #D49405;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #0B0D11;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar for industrial UI */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #11141A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222834;
+  border-radius: 4px;
+  border: 1px solid #323B4C;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E6A817;
+}
+
+/* Industrial Utility Classes */
+.industrial-border {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.industrial-card {
+  background: #11141A;
+  border: 1px solid #222834;
+  transition: all 0.25s ease-in-out;
+}
+
+.industrial-card:hover {
+  border-color: #E6A817;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(230, 168, 23, 0.15);
+}
+
+.btn-brand-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #E6A817;
+  color: #0B0D11;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-brand-primary:hover {
+  background-color: #F59E0B;
+  box-shadow: 0 0 20px rgba(230, 168, 23, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-brand-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #181C24;
+  color: #F1F5F9;
+  font-weight: 600;
+  border: 1px solid #323B4C;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-brand-secondary:hover {
+  border-color: #E6A817;
+  background-color: #222834;
+  color: #FFFFFF;
+}

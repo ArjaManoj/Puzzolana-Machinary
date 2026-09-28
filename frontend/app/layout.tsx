@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
+import { SkipToContent } from '@/components/common/SkipToContent';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationSchema } from '@/lib/seo';
 
@@ -91,8 +92,11 @@ export default function RootLayout({
         <JsonLd data={orgSchema} />
       </head>
       <body className="min-h-screen flex flex-col bg-industrial-950 text-industrial-100 antialiased selection:bg-brand-yellow selection:text-industrial-950">
+        <SkipToContent />
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex-grow focus:outline-none">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

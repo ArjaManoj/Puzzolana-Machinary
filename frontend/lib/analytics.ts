@@ -3,7 +3,7 @@
  * Non-blocking, zero-PII client event logging for Puzzolana Platform
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { getApiBaseUrl } from './api';
 
 export type AnalyticsEventType =
   | 'page_view'
@@ -32,13 +32,14 @@ export async function trackEvent(
     },
   };
 
+  const apiBase = getApiBaseUrl();
   try {
     // Non-blocking beacon or fetch
     if (navigator.sendBeacon) {
       const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-      navigator.sendBeacon(`${API_BASE}/analytics/event`, blob);
+      navigator.sendBeacon(`${apiBase}/analytics/event`, blob);
     } else {
-      fetch(`${API_BASE}/analytics/event`, {
+      fetch(`${apiBase}/analytics/event`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

@@ -74,7 +74,12 @@ export const createApp = (): Application => {
           'https://puzzolana.com',
           'https://www.puzzolana.com',
         ];
-        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+        if (
+          allowedOrigins.indexOf(origin) !== -1 ||
+          origin.endsWith('.vercel.app') ||
+          process.env.NODE_ENV === 'development' ||
+          process.env.NODE_ENV === 'test'
+        ) {
           return callback(null, true);
         }
         return callback(new Error('CORS policy does not allow access from this origin.'));

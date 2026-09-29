@@ -28,6 +28,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { VERIFIED_FRONTEND_PRODUCTS, OFFICIAL_CATEGORIES } from '@/lib/seedCatalog';
 import { MachineryProduct, EquipmentCategorySlug } from '@/types';
+import { getApiBaseUrl } from '@/lib/api';
 
 export default function AdminProductsPage() {
   const router = useRouter();
@@ -81,7 +82,7 @@ export default function AdminProductsPage() {
     setIsRefreshing(true);
     try {
       if (token) {
-        const res = await fetch('http://localhost:5000/api/admin/products', {
+        const res = await fetch(`${getApiBaseUrl()}/admin/products`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -232,7 +233,7 @@ export default function AdminProductsPage() {
       if (editingProduct) {
         // Update
         if (token) {
-          await fetch(`http://localhost:5000/api/admin/products/${editingProduct.id}`, {
+          await fetch(`${getApiBaseUrl()}/admin/products/${editingProduct.id}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -247,7 +248,7 @@ export default function AdminProductsPage() {
       } else {
         // Create
         if (token) {
-          await fetch('http://localhost:5000/api/admin/products', {
+          await fetch(`${getApiBaseUrl()}/admin/products`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -273,7 +274,7 @@ export default function AdminProductsPage() {
     setIsDeleting(true);
     try {
       if (token) {
-        await fetch(`http://localhost:5000/api/admin/products/${deletingProduct.id}`, {
+        await fetch(`${getApiBaseUrl()}/admin/products/${deletingProduct.id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
         });

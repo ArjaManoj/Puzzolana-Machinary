@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
-import { ApiClient } from '@/lib/api';
+import { ApiClient, getApiBaseUrl } from '@/lib/api';
 
 interface DashboardKpiData {
   overview: {
@@ -250,7 +250,7 @@ export default function AdminDashboardPage() {
     setIsRefreshing(true);
     try {
       if (token) {
-        const kpiRes = await fetch('http://localhost:5000/api/admin/kpis', {
+        const kpiRes = await fetch(`${getApiBaseUrl()}/admin/kpis`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (kpiRes.ok) {
@@ -258,7 +258,7 @@ export default function AdminDashboardPage() {
           if (kpiJson.data) setKpis(kpiJson.data);
         }
 
-        const enqRes = await fetch('http://localhost:5000/api/admin/enquiries', {
+        const enqRes = await fetch(`${getApiBaseUrl()}/admin/enquiries`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (enqRes.ok) {
@@ -292,7 +292,7 @@ export default function AdminDashboardPage() {
     setIsUpdating(true);
     try {
       if (token) {
-        await fetch(`http://localhost:5000/api/admin/enquiries/${activeEnquiryModal.id}`, {
+        await fetch(`${getApiBaseUrl()}/admin/enquiries/${activeEnquiryModal.id}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

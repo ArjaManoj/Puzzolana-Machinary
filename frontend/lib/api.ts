@@ -1,8 +1,29 @@
-/**
- * Frontend Enterprise API Client for Puzzolana Platform
- */
+import { AuthManager } from './auth';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+/**
+ * Resolves the API Base URL across environments:
+ * 1. Server-side in Vercel with Service Binding: process.env.BACKEND_SERVICE_URL (injected at runtime by Vercel)
+ * 2. Explicit Environment Variable: process.env.NEXT_PUBLIC_API_URL
+ * 3. Client-side browser execution: '/api' (matching Vercel top-level rewrite /api/(.*) -> backend)
+ * 4. Local Development Server fallback: 'http://localhost:5000/api'
+ */
+export const getApiBaseUrl = (): string => {
+  // 1. Server-side runtime with Vercel service binding
+  if (typeof window === 'undefined' && process.env.BACKEND_SERVICE_URL) {
+    const base = process.env.BACKEND_SERVICE_URL.replace(/\/$/, '');
+    return `${base}/api`;
+  }
+  // 2. Explicit NEXT_PUBLIC_API_URL if configured
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  // 3. Client-side browser execution
+  if (typeof window !== 'undefined') {
+    return '/api';
+  }
+  // 4. Default fallback for local dev
+  return 'http://localhost:5000/api';
+};
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -13,7 +34,10 @@ export interface ApiResponse<T> {
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
-  const url = `${API_BASE}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  const apiBase = getApiBaseUrl();
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${apiBase}${cleanEndpoint}`;
+  const authHeaders = typeof window !== 'undefined' ? AuthManager.getAuthHeaders() : {};
   const defaultHeaders = {
     'Content-Type': 'application/json',
     Accept: 'application/json',

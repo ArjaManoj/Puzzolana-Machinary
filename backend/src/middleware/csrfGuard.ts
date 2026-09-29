@@ -19,6 +19,10 @@ function isOriginAllowed(origin: string): boolean {
     const originUrl = new URL(origin);
     const originNormalized = `${originUrl.protocol}//${originUrl.host}`;
     
+    if (originUrl.hostname.endsWith('.vercel.app')) {
+      return true;
+    }
+
     return ALLOWED_ORIGIN_PATTERNS.some((allowed) => {
       try {
         const allowedUrl = new URL(allowed);
